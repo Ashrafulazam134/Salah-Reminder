@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg-deep:#050810;
@@ -40,18 +40,20 @@
     justify-content:center;
     padding-bottom:env(safe-area-inset-bottom);
   }
+  body.lang-bn, body.lang-bn .mihrab .next-name, body.lang-bn .brand .mark, body.lang-bn .row .name{
+    font-family:'Hind Siliguri','Manrope',sans-serif;
+  }
   .app{
     width:100%;
     max-width:480px;
     min-height:100vh;
     display:flex;
     flex-direction:column;
-    padding:24px 20px calc(88px + env(safe-area-inset-bottom));
+    padding:24px 20px calc(120px + env(safe-area-inset-bottom));
     position:relative;
   }
 
-  /* header */
-  header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;}
+  header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;gap:10px;}
   .brand{display:flex;flex-direction:column;gap:2px;}
   .brand .mark{font-family:'Amiri',serif;font-size:27px;font-weight:700;color:var(--text-ivory);letter-spacing:.3px;}
   .brand .mark span{
@@ -61,6 +63,7 @@
     filter:drop-shadow(0 0 12px rgba(232,200,116,0.35));
   }
   .brand .sub{font-size:12px;color:var(--text-muted);letter-spacing:.04em;}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
   .loc-pill{
     display:flex;align-items:center;gap:6px;
     background:var(--bg-panel);
@@ -74,8 +77,20 @@
   }
   .loc-pill svg{flex-shrink:0;width:12px;height:12px;fill:var(--accent-gold-soft);}
   .loc-pill span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .lang-toggle{
+    display:flex; background:var(--bg-panel); border:1px solid var(--line);
+    border-radius:999px; padding:3px; gap:2px;
+  }
+  .lang-toggle button{
+    border:none; background:none; color:var(--text-muted);
+    font-family:'Manrope',sans-serif; font-size:11px; font-weight:700;
+    padding:5px 10px; border-radius:999px; cursor:pointer; letter-spacing:.02em;
+  }
+  .lang-toggle button.active{
+    background:linear-gradient(135deg, var(--accent-gold-soft), var(--accent-gold));
+    color:#141017;
+  }
 
-  /* mihrab hero */
   .mihrab{
     position:relative;
     margin-top:6px;
@@ -136,19 +151,41 @@
     display:block; font-family:'Manrope',sans-serif; font-size:11px; color:var(--text-muted);
     font-weight:500; margin-top:4px; letter-spacing:.06em; text-transform:uppercase;
   }
+  body.lang-bn .mihrab .countdown .lbl{font-family:'Hind Siliguri',sans-serif;}
   .mihrab .at-time{
     position:relative;
     margin-top:14px; font-size:13px; color:var(--text-muted);
   }
 
-  /* dates row */
   .dates{
     display:flex; justify-content:space-between; margin-top:18px;
     font-size:12px; font-weight:600; color:var(--accent-silver);
     letter-spacing:.02em;
   }
 
-  /* prayer list */
+  .ramadan-card{
+    display:none;
+    margin-top:16px;
+    align-items:center; gap:12px;
+    background:linear-gradient(90deg, rgba(232,200,116,0.14), rgba(232,200,116,0.03));
+    border:1px solid rgba(232,200,116,0.35);
+    border-radius:16px;
+    padding:13px 16px;
+  }
+  .ramadan-card.visible{display:flex;}
+  .ramadan-card .mini-moon{
+    width:34px; height:34px; border-radius:50%;
+    background:var(--accent-gold); flex-shrink:0;
+    box-shadow:0 0 14px var(--glow-gold);
+    position:relative; overflow:hidden;
+  }
+  .ramadan-card .mini-moon::after{
+    content:""; position:absolute; width:26px; height:26px; border-radius:50%;
+    background:var(--bg-panel); top:4px; left:14px;
+  }
+  .ramadan-card .txt{font-size:13px; color:var(--accent-silver); line-height:1.35;}
+  .ramadan-card .txt b{color:var(--accent-gold-soft); font-weight:700;}
+
   .list{margin-top:24px; display:flex; flex-direction:column; gap:10px;}
   .row{
     display:flex; align-items:center; justify-content:space-between;
@@ -172,7 +209,6 @@
   .row .time{font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600; color:var(--text-muted);}
   .row.active .time{color:var(--accent-gold-soft); font-weight:700; text-shadow:0 0 12px rgba(232,200,116,0.3);}
 
-  /* qibla */
   .qibla-view{display:none; flex-direction:column; align-items:center; margin-top:10px;}
   .qibla-view.visible{display:flex;}
   .compass-wrap{
@@ -202,7 +238,40 @@
   .qibla-deg{margin-top:22px; font-family:'IBM Plex Mono',monospace; font-size:22px; font-weight:700; color:var(--accent-gold-soft); text-shadow:0 0 20px rgba(232,200,116,0.3);}
   .qibla-note{margin-top:8px; font-size:12px; color:var(--text-muted); text-align:center; max-width:280px;}
 
-  /* bottom nav */
+  .tasbih-view{display:none; flex-direction:column; align-items:center; margin-top:14px;}
+  .tasbih-view.visible{display:flex;}
+  .tasbih-target-row{display:flex; gap:8px; margin-top:18px;}
+  .tasbih-chip{
+    border:1px solid var(--line); background:var(--bg-panel); color:var(--text-muted);
+    font-family:'Manrope',sans-serif; font-size:12px; font-weight:700;
+    padding:7px 14px; border-radius:999px; cursor:pointer;
+  }
+  .tasbih-chip.active{
+    background:linear-gradient(135deg, var(--accent-gold-soft), var(--accent-gold));
+    color:#141017; border-color:transparent;
+  }
+  .tasbih-dial{
+    width:250px; height:250px; border-radius:50%; margin-top:26px;
+    background:radial-gradient(circle at 35% 30%, var(--bg-panel-2), var(--bg-panel) 70%);
+    border:1px solid rgba(232,200,116,0.4);
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    box-shadow:0 0 60px -10px var(--glow-gold), 0 20px 40px -15px rgba(0,0,0,0.6);
+    cursor:pointer; -webkit-tap-highlight-color:transparent; user-select:none;
+    transition:transform .08s ease;
+  }
+  .tasbih-dial:active{transform:scale(0.97);}
+  .tasbih-count{
+    font-family:'IBM Plex Mono',monospace; font-size:56px; font-weight:700;
+    color:var(--text-ivory); text-shadow:0 0 24px rgba(255,255,255,0.2);
+  }
+  .tasbih-of{font-size:13px; color:var(--text-muted); margin-top:4px;}
+  .tasbih-tap-hint{font-size:11px; color:var(--accent-gold); text-transform:uppercase; letter-spacing:.12em; margin-top:10px; font-weight:700;}
+  .tasbih-reset{
+    margin-top:22px; background:none; border:1px solid var(--line); color:var(--text-muted);
+    font-family:'Manrope',sans-serif; font-size:13px; font-weight:600;
+    padding:10px 22px; border-radius:12px; cursor:pointer;
+  }
+
   nav.tabs{
     position:fixed; bottom:0; left:0; right:0;
     display:flex; justify-content:center;
@@ -210,18 +279,19 @@
   }
   .tabs-inner{
     width:100%; max-width:480px;
-    display:flex; gap:8px;
+    display:flex; gap:4px;
     background:rgba(10,15,26,0.85);
     backdrop-filter:blur(16px);
     border-top:1px solid rgba(232,200,116,0.25);
-    padding:12px 20px calc(12px + env(safe-area-inset-bottom));
+    padding:12px 12px calc(12px + env(safe-area-inset-bottom));
   }
   .tab-btn{
     flex:1; display:flex; flex-direction:column; align-items:center; gap:5px;
     background:none; border:none; color:var(--text-muted);
-    font-family:'Manrope',sans-serif; font-size:11px; font-weight:600;
-    letter-spacing:.02em; padding:6px 0; cursor:pointer;
+    font-family:'Manrope',sans-serif; font-size:10.5px; font-weight:600;
+    letter-spacing:.01em; padding:6px 0; cursor:pointer;
   }
+  body.lang-bn .tab-btn{font-family:'Hind Siliguri',sans-serif; font-size:11px;}
   .tab-btn svg{width:20px;height:20px;fill:none;stroke:var(--text-muted);stroke-width:1.6;}
   .tab-btn.active{color:var(--accent-gold-soft);}
   .tab-btn.active svg{stroke:var(--accent-gold); filter:drop-shadow(0 0 6px rgba(232,200,116,0.6));}
@@ -244,39 +314,50 @@
 
   <header>
     <div class="brand">
-      <div class="mark">Salah <span>Reminder</span></div>
+      <div class="mark"><span data-i18n="brandSalah">Salah</span> <span data-i18n="brandReminder">Reminder</span></div>
       <div class="sub" id="hijriDate">—</div>
     </div>
-    <div class="loc-pill">
-      <svg viewBox="0 0 24 24"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 8 12 8 12s8-6.6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
-      <span id="locLabel">Locating…</span>
+    <div class="header-right">
+      <div class="loc-pill">
+        <svg viewBox="0 0 24 24"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 8 12 8 12s8-6.6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+        <span id="locLabel">Locating…</span>
+      </div>
+      <div class="lang-toggle">
+        <button id="langEnBtn" class="active">EN</button>
+        <button id="langBnBtn">বাং</button>
+      </div>
     </div>
   </header>
 
   <div class="status-banner" id="notifyBanner">
-    Enable notifications so Salah Reminder can alert you at every prayer time.
-    <div><button id="enableNotifyBtn">Enable notifications</button></div>
+    <span data-i18n="notifyText">Enable notifications so Salah Reminder can alert you at every prayer time.</span>
+    <div><button id="enableNotifyBtn" data-i18n="notifyBtn">Enable notifications</button></div>
   </div>
 
   <div id="timesView">
     <div class="mihrab">
       <div class="arch-pattern"></div>
-      <div class="eyebrow">Next prayer</div>
+      <div class="eyebrow" data-i18n="nextPrayer">Next prayer</div>
       <div class="next-name" id="nextName">—</div>
-      <div class="countdown" id="countdown">--:--:--<span class="lbl">remaining</span></div>
+      <div class="countdown" id="countdown">--:--:--<span class="lbl" data-i18n="remaining">remaining</span></div>
       <div class="at-time" id="nextAt">—</div>
     </div>
 
     <div class="dates">
       <span id="gregDate">—</span>
-      <span id="methodLabel">Method: Karachi</span>
+      <span id="methodLabel"><span data-i18n="methodLabel">Method: Karachi</span></span>
+    </div>
+
+    <div class="ramadan-card" id="ramadanCard">
+      <div class="mini-moon"></div>
+      <div class="txt" id="ramadanText">—</div>
     </div>
 
     <div class="list" id="prayerList"></div>
   </div>
 
   <div class="qibla-view" id="qiblaView">
-    <div class="status-banner visible" style="margin-top:6px;">
+    <div class="status-banner visible" style="margin-top:6px;" data-i18n="qiblaHint">
       Point the top of your phone forward and rotate until the needle lines up with the marker.
     </div>
     <div class="compass-wrap">
@@ -284,18 +365,36 @@
       <div class="needle" id="needle"></div>
     </div>
     <div class="qibla-deg" id="qiblaDeg">—°</div>
-    <div class="qibla-note" id="qiblaNote">Calculating direction to the Kaaba from your location…</div>
+    <div class="qibla-note" id="qiblaNote" data-i18n="qiblaCalc">Calculating direction to the Kaaba from your location…</div>
+  </div>
+
+  <div class="tasbih-view" id="tasbihView">
+    <div class="tasbih-target-row" id="tasbihTargets">
+      <button class="tasbih-chip active" data-target="33">33</button>
+      <button class="tasbih-chip" data-target="99">99</button>
+      <button class="tasbih-chip" data-target="100">100</button>
+    </div>
+    <div class="tasbih-dial" id="tasbihDial">
+      <div class="tasbih-count" id="tasbihCount">0</div>
+      <div class="tasbih-of" id="tasbihOf">/ 33</div>
+    </div>
+    <div class="tasbih-tap-hint" data-i18n="tapToCount">Tap the circle to count</div>
+    <button class="tasbih-reset" id="tasbihReset" data-i18n="resetBtn">Reset</button>
   </div>
 
   <nav class="tabs">
     <div class="tabs-inner">
       <button class="tab-btn active" data-tab="times">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        Prayer Times
+        <span data-i18n="tabTimes">Prayer Times</span>
       </button>
       <button class="tab-btn" data-tab="qibla">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="2"/></svg>
-        Qibla
+        <span data-i18n="tabQibla">Qibla</span>
+      </button>
+      <button class="tab-btn" data-tab="tasbih">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="4" r="1.4"/><path d="M12 8v4l3 2"/></svg>
+        <span data-i18n="tabTasbih">Tasbih</span>
       </button>
     </div>
   </nav>
